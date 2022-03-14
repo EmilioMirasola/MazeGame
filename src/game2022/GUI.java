@@ -114,6 +114,7 @@ public class GUI extends Application {
 			primaryStage.show();
 
 			scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+				//Check if valid move
 				switch (event.getCode()) {
 				case UP:    playerMoved(0,-1,"up");    break;
 				case DOWN:  playerMoved(0,+1,"down");  break;
@@ -122,21 +123,38 @@ public class GUI extends Application {
 				default: break;
 				}
 			});
-			
+			createPlayers("Oskar", "Jeppe");
             // Setting up standard players
-			
-			me = new Player("Orville",9,4,"up");
-			players.add(me);
-			fields[9][4].setGraphic(new ImageView(hero_up));
+			//Player 1
+//			me = new Player("Orville",9,4,"up");
+//			players.add(me);
+//			fields[9][4].setGraphic(new ImageView(hero_up));
+//
+//			//Player 2
+//			Player harry = new Player("Harry",14,15,"up");
+//			players.add(harry);
+//			fields[14][15].setGraphic(new ImageView(hero_up));
+//
+//			scoreList.setText(getScoreList());
 
-			Player harry = new Player("Harry",14,15,"up");
-			players.add(harry);
-			fields[14][15].setGraphic(new ImageView(hero_up));
-
-			scoreList.setText(getScoreList());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void createPlayers(String playerOneName, String playerTwoName) {
+
+		Player playerOne = new Player(playerOneName, 9, 4, "up");
+		Player playerTwo = new Player(playerTwoName, 14, 15, "up");
+
+		players.add(playerOne);
+		players.add(playerTwo);
+
+		//Add image to GUI
+		fields[9][4].setGraphic(new ImageView(hero_up));
+		fields[14][15].setGraphic(new ImageView(hero_up));
+
+		scoreList.setText(getScoreList());
 	}
 
 	public void playerMoved(int delta_x, int delta_y, String direction) {
