@@ -15,7 +15,7 @@ import javafx.scene.text.*;
 
 public class GUI extends Application {
 
-	public static final int size = 20; 
+	public static final int size = 20;
 	public static final int scene_height = size * 20 + 100;
 	public static final int scene_width = size * 20 + 200;
 
@@ -148,7 +148,7 @@ public class GUI extends Application {
 		} 
 		else {
 			Player p = getPlayerAt(x+delta_x,y+delta_y);
-			if (p!=null) {
+			if (p != null) {
               me.addPoints(10);
               p.addPoints(-10);
 			} else {
