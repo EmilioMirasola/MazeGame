@@ -1,8 +1,6 @@
 package client;
 
-import game2022.GUI;
-import game2022.Player;
-import javafx.application.Application;
+import server.Controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,28 +8,27 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class ReadThread extends Thread {
-    private Socket connectionSocket;
+	private Socket connectionSocket;
+	private Controller controller;
 
-    public ReadThread(Socket connectionSocket) {
-        this.connectionSocket = connectionSocket;
-    }
+	public ReadThread(Socket connectionSocket) {
+		this.connectionSocket = connectionSocket;
+		this.controller = new Controller();
+	}
 
-    public void run() {
-        while (true) {
-            try {
-                BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-                String clientSentence = inFromClient.readLine();
+	public void run() {
+		while (true) {
+			try {
+				BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+				String clientSentence = inFromClient.readLine();
 
-                if (clientSentence.split(" ")[0].equals("opret")) {
-                    Application.launch(GUI.class);
-                }
+				controller.handleRequest(clientSentence);
 
-                System.out.println(clientSentence);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
 
 
