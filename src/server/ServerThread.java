@@ -1,8 +1,7 @@
 package server;
 
-import javax.print.DocFlavor;
-import java.net.*;
 import java.io.*;
+import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 public class ServerThread extends Thread {
