@@ -1,6 +1,8 @@
 package client;
 
+import game2022.GUI;
 import game2022.Player;
+import javafx.application.Application;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,6 +23,7 @@ public class ReadThread extends Thread {
                 String clientSentence = inFromClient.readLine();
 
                 if (clientSentence.split(" ")[0].equals("opret")) {
+                    Application.launch(GUI.class);
                 }
 
                 System.out.println(clientSentence);
