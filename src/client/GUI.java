@@ -49,6 +49,7 @@ public class GUI extends Application {
 
 	public static Player me;
 	public static List<Player> players = new ArrayList<Player>();
+	public static boolean playersInitialized = false;
 
 	private Label[][] fields;
 	private TextArea scoreList;
@@ -167,15 +168,15 @@ public class GUI extends Application {
 //			createPlayers("Oskar", "Jeppe");
 //             Setting up standard players
 //			Player 1
-			me = new Player("Orville",9,4, Direction.UP);
-			players.add(me);
-			fields[9][4].setGraphic(new ImageView(hero_up));
-
-			//Player 2
-			Player harry = new Player("Harry",14,15,Direction.UP);
-			players.add(harry);
-			fields[14][15].setGraphic(new ImageView(hero_up));
-
+//			me = new Player("Orville",9,4, Direction.UP);
+//			players.add(me);
+//			fields[9][4].setGraphic(new ImageView(hero_up));
+//
+//			//Player 2
+//			Player harry = new Player("Harry",14,15,Direction.UP);
+//			players.add(harry);
+//			fields[14][15].setGraphic(new ImageView(hero_up));
+//
 			scoreList.setText(getScoreList());
 
 		} catch(Exception e) {
@@ -183,20 +184,21 @@ public class GUI extends Application {
 		}
 	}
 
-	public void createPlayers(String playerOneName, String playerTwoName) {
-
-		Player playerOne = new Player(playerOneName, 9, 4, Direction.UP);
-		Player playerTwo = new Player(playerTwoName, 14, 15, Direction.UP);
-
-		players.add(playerOne);
-		players.add(playerTwo);
-
-		//Add image to GUI
-		fields[9][4].setGraphic(new ImageView(hero_up));
-		fields[14][15].setGraphic(new ImageView(hero_up));
-
-		scoreList.setText(getScoreList());
-	}
+//	public void createPlayers(ArrayList<String> playerNames) {
+//
+//
+//		Player playerOne = new Player(playerOneName, 9, 4, Direction.UP);
+//		Player playerTwo = new Player(playerTwoName, 14, 15, Direction.UP);
+//
+//		players.add(playerOne);
+//		players.add(playerTwo);
+//
+//		//Add image to GUI
+//		fields[9][4].setGraphic(new ImageView(hero_up));
+//		fields[14][15].setGraphic(new ImageView(hero_up));
+//
+//		scoreList.setText(getScoreList());
+//	}
 
 	public void playerMoved(String playerName, int delta_x, int delta_y, Direction direction) {
 		Player playerToMove = null;
@@ -285,6 +287,24 @@ class ReadFromServer extends Thread {
 			BufferedReader inFromServer = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 			String game = inFromServer.readLine();
 			String[] gameArray = game.split(",");
+
+			//Bruges til at initialisere players i starten af spillet
+			if (!playersInitialized) {
+				for (int i = 0; i < gameArray.length; i++) {
+
+					String[] playerArray = gameArray[i].split(" ");
+					Optional<Direction> direction = Direction.get(playerArray[4]);
+					Player player = new Player(playerArray[1],
+							Integer.parseInt(playerArray[2]),
+							Integer.parseInt(playerArray[3]),
+							direction.get());
+					players.add(player);
+
+				}
+				playersInitialized = true;
+			}
+			//----------------------------------------------------------
+
 			for (int i = 0; i < gameArray.length; i++) {
 
 				String[] playerArray = gameArray[i].split(" ");
