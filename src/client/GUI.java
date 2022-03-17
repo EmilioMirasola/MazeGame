@@ -35,7 +35,7 @@ public class GUI extends Application {
 
 	static {
 		try {
-			connectionSocket = new Socket("localhost", 6789);
+			connectionSocket = new Socket("10.10.131.92", 6789);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
