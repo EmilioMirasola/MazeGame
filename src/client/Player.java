@@ -1,11 +1,7 @@
 package client;
 
-import lombok.Getter;
-import lombok.Setter;
 import model.Direction;
 
-@Getter
-@Setter
 public class Player {
 	String name;
 	int xpos;
@@ -31,5 +27,45 @@ public class Player {
 						this.getPoint() + " "
 						+ ","
 				);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getXpos() {
+		return xpos;
+	}
+
+	public int getYpos() {
+		return ypos;
+	}
+
+	public int getPoint() {
+		return point;
+	}
+
+	public Direction getDirection() {
+		return direction;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setXpos(int xpos) {
+		this.xpos = xpos;
+	}
+
+	public void setYpos(int ypos) {
+		this.ypos = ypos;
+	}
+
+	public void setPoint(int point) {
+		this.point = point;
+	}
+
+	public void setDirection(Direction direction) {
+		this.direction = direction;
 	}
 }
