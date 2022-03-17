@@ -4,9 +4,10 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public enum Command {
-	CONNECT("connect");
+	CONNECT("connect"),
+	MOVE("move");
 
-	public final String command;
+    public final String command;
 
 	Command(String command) {
 		this.command = command;
@@ -17,4 +18,5 @@ public enum Command {
 				.filter(command -> command.command.equals(requestCommand))
 				.findFirst();
 	}
+
 }

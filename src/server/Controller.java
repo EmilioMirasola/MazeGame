@@ -1,12 +1,19 @@
 package server;
 
+import client.Player;
+import database.Database;
 import model.Command;
-import server.service.PlayerService;
+import server.service.ConnectionService;
+import server.service.MoveService;
 
+import java.util.List;
 import java.util.Optional;
 
 public class Controller {
-	PlayerService playerService = new PlayerService();
+	ConnectionService connectionService = new ConnectionService();
+	MoveService moveService = new MoveService();
+
+
 
 	public void handleRequest(String request) {
 		String requestCommand = request.split(" ")[0].strip();
@@ -20,11 +27,41 @@ public class Controller {
 
 		switch (command.get()) {
 			case CONNECT:
-				playerService.connectPlayer(request);
+				connectionService.connectPlayer(request);
 				break;
+			case MOVE:
+				moveService.movePlayer(request);
 			default:
 				throw new IllegalArgumentException("Unknown command");
 		}
 
+
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

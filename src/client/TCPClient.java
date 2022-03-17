@@ -1,22 +1,28 @@
 package client;
 
+import model.Command;
 import threads.ReadThread;
-import threads.WriteThread;
 
 import java.net.Socket;
 
 public class TCPClient {
+    private static Socket connectionSocket;
 
-    public static void main(String[] args) throws Exception {
+    private static ReadThread rt;
 
-        Socket connectionSocket = new Socket("localhost", 6789);
 
-        ReadThread rt = new ReadThread(connectionSocket);
-        WriteThread wt = new WriteThread(connectionSocket);
+    public static void start() throws Exception {
+        connectionSocket = new Socket("localhost", 6789);
+        rt = new ReadThread(connectionSocket);
 
         rt.start();
-        wt.start();
 
+
+
+
+    }
+
+    public static void handleRequest(Command command, String req) {
 
     }
 }

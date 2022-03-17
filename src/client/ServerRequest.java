@@ -11,8 +11,8 @@ import java.net.Socket;
 public class ServerRequest {
     private final Socket connectionSocket;
 
-    public ServerRequest() throws IOException {
-        this.connectionSocket = new Socket("localhost", 6789);
+    public ServerRequest(Socket connectionSocket) {
+        this.connectionSocket = connectionSocket;
     }
 
     public void connect(String playerName){
@@ -30,5 +30,10 @@ public class ServerRequest {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+    }
+
+    public void move(String direction) {
+        Command command = Command.MOVE;
+        performRequest(command + " " + direction);
     }
 }

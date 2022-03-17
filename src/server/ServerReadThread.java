@@ -1,17 +1,18 @@
-package threads;
+package server;
 
-import server.Controller;
+import lombok.Getter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-public class ReadThread extends Thread {
+@Getter
+public class ServerReadThread extends Thread {
 	private Socket connectionSocket;
 	private Controller controller;
 
-	public ReadThread(Socket connectionSocket) {
+	public ServerReadThread(Socket connectionSocket) {
 		this.connectionSocket = connectionSocket;
 		this.controller = new Controller();
 	}
@@ -22,6 +23,7 @@ public class ReadThread extends Thread {
 				BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 				String clientSentence = inFromClient.readLine();
 				controller.handleRequest(clientSentence);
+				TCPServer.pushDataToClients();
 
 			} catch (IOException e) {
 				e.printStackTrace();

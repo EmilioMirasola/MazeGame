@@ -1,24 +1,47 @@
 package client;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import model.Direction;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.image.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import lombok.SneakyThrows;
+import model.Direction;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class GUI extends Application {
 
 	public static final int size = 20;
 	public static final int scene_height = size * 20 + 100;
 	public static final int scene_width = size * 20 + 200;
+
+	private static Socket connectionSocket;
+
+	static {
+		try {
+			connectionSocket = new Socket("localhost", 6789);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public ServerRequest serverRequest = new ServerRequest(connectionSocket);
 
 	public static Image image_floor;
 	public static Image image_wall;
@@ -53,6 +76,9 @@ public class GUI extends Application {
 			"wwwwwwwwwwwwwwwwwwww"
 	};
 
+	public GUI() throws IOException {
+	}
+
 
 	// -------------------------------------------
 	// | Maze: (0,0)              | Score: (1,0) |
@@ -63,6 +89,8 @@ public class GUI extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
+		ReadFromServer readFromServer = new ReadFromServer();
+		readFromServer.start();
 		try {
 			GridPane grid = new GridPane();
 			grid.setHgap(10);
@@ -116,24 +144,24 @@ public class GUI extends Application {
 
 			scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 				//Check if valid move
-				switch (event.getCode()) {
-				case UP:
-					//Send update til serveren
-					playerMoved(0,-1,Direction.UP);
-					break;
-				case DOWN:
-					//Send update til serveren
-					playerMoved(0,+1,Direction.DOWN);
-					break;
-				case LEFT:
-					//Send update til serveren
-					playerMoved(-1,0,Direction.LEFT);
-					break;
-				case RIGHT:
-					//Send update til serveren
-					playerMoved(+1,0,Direction.RIGHT);
-					break;
-				default: break;
+				try {
+					switch (event.getCode()) {
+						case UP:
+							serverRequest.move("up");
+							break;
+						case DOWN:
+							serverRequest.move("down");
+							break;
+						case LEFT:
+							serverRequest.move("left");
+							break;
+						case RIGHT:
+							serverRequest.move("right");
+							break;
+						default: break;
+					}
+				}catch(Error e) {
+					System.out.println(e.getMessage());
 				}
 			});
 //			createPlayers("Oskar", "Jeppe");
@@ -170,43 +198,53 @@ public class GUI extends Application {
 		scoreList.setText(getScoreList());
 	}
 
-	public void playerMoved(int delta_x, int delta_y, Direction direction) {
-		me.direction = direction;
-		int x = me.getXpos(),y = me.getYpos();
-
-		if (board[y+delta_y].charAt(x+delta_x)=='w') {
-			me.addPoints(-1);
-		}
-		else {
-			Player p = getPlayerAt(x+delta_x,y+delta_y);
-			if (p != null) {
-              me.addPoints(10);
-              p.addPoints(-10);
-			} else {
-				me.addPoints(1);
-
-				fields[x][y].setGraphic(new ImageView(image_floor));
-				x+=delta_x;
-				y+=delta_y;
-
-				if (direction == Direction.RIGHT) {
-					fields[x][y].setGraphic(new ImageView(hero_right));
-				};
-				if (direction == Direction.LEFT) {
-					fields[x][y].setGraphic(new ImageView(hero_left));
-				};
-				if (direction == Direction.UP) {
-					fields[x][y].setGraphic(new ImageView(hero_up));
-				};
-				if (direction == Direction.DOWN) {
-					fields[x][y].setGraphic(new ImageView(hero_down));
-				};
-
-				me.setXpos(x);
-				me.setYpos(y);
+	public void playerMoved(String playerName, int delta_x, int delta_y, Direction direction) {
+		Player playerToMove = null;
+		for (Player p : players) {
+			if (p.getName().equals(playerName)) {
+				playerToMove = p;
+				break;
 			}
 		}
-		scoreList.setText(getScoreList());
+		if (playerToMove != null) {
+			playerToMove.direction = direction;
+			int x = playerToMove.getXpos(),y = playerToMove.getYpos();
+
+			if (board[y+delta_y].charAt(x+delta_x)=='w') {
+				playerToMove.setPoint(playerToMove.getPoint() -1);
+			}
+			else {
+				Player p = getPlayerAt(x+delta_x,y+delta_y);
+				if (p != null) {
+					playerToMove.setPoint(playerToMove.getPoint() + 10);
+					p.setPoint(playerToMove.getPoint() - 10);
+				} else {
+					playerToMove.setPoint(playerToMove.getPoint() + 1);
+
+					fields[x][y].setGraphic(new ImageView(image_floor));
+					x+=delta_x;
+					y+=delta_y;
+
+					if (direction == Direction.RIGHT) {
+						fields[x][y].setGraphic(new ImageView(hero_right));
+					};
+					if (direction == Direction.LEFT) {
+						fields[x][y].setGraphic(new ImageView(hero_left));
+					};
+					if (direction == Direction.UP) {
+						fields[x][y].setGraphic(new ImageView(hero_up));
+					};
+					if (direction == Direction.DOWN) {
+						fields[x][y].setGraphic(new ImageView(hero_down));
+					};
+
+					playerToMove.setXpos(x);
+					playerToMove.setYpos(y);
+				}
+			}
+			scoreList.setText(getScoreList());
+		}
+
 	}
 
 	public String getScoreList() {
@@ -225,6 +263,49 @@ public class GUI extends Application {
 		}
 		return null;
 	}
+
+	public static void setMe(Player player) {
+		GUI.me = player;
+	}
+
+	public static void setPlayers(ArrayList<Player> players) {
+		GUI.players = players;
+		GUI.players.removeIf(p -> p.equals(GUI.me));
+	}
+
+
+
+
+
+class ReadFromServer extends Thread {
+	@SneakyThrows
+	public void run() {
+
+		while (true) {
+			BufferedReader inFromServer = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+			String game = inFromServer.readLine();
+			String[] gameArray = game.split(",");
+			for (int i = 0; i < gameArray.length; i++) {
+
+				String[] playerArray = gameArray[i].split(" ");
+				Optional<Direction> direction = Direction.get(playerArray[4]);
+
+				Platform.runLater(() -> {
+					playerMoved(
+						playerArray[1],
+						Integer.parseInt(playerArray[2]),
+						Integer.parseInt(playerArray[3]),
+						direction.get()
+						);
+				});
+			}
+			
+		}
+
+
+	}
+
+}
 
 
 }
