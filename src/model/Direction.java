@@ -14,7 +14,7 @@ public enum Direction {
 
 	public static Optional<Direction> get(String direction) {
 		return Arrays.stream(Direction.values())
-				.filter(dir -> dir.direction.equals(direction))
+				.filter(dir -> dir.direction.equalsIgnoreCase(direction))
 				.findFirst();
 	}
 }

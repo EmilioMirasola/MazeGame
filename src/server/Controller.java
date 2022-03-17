@@ -1,12 +1,9 @@
 package server;
 
-import client.Player;
-import database.Database;
 import model.Command;
 import server.service.ConnectionService;
 import server.service.MoveService;
 
-import java.util.List;
 import java.util.Optional;
 
 public class Controller {

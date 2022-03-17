@@ -15,7 +15,7 @@ public enum Command {
 
 	public static Optional<Command> get(String requestCommand) {
 		return Arrays.stream(Command.values())
-				.filter(command -> command.command.equals(requestCommand))
+				.filter(command -> command.command.equalsIgnoreCase(requestCommand))
 				.findFirst();
 	}
 

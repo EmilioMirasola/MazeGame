@@ -29,17 +29,18 @@ public class TCPServer {
 	}
 
 	public static void pushDataToClients() throws IOException {
-		StringBuilder game = new StringBuilder();
+		String game = "";
 		List<Player> players = Database.getPlayers();
 
 		for (Player p : players) {
-			game.append(p.toString());
+			game += p.toString();
 		}
-		game.append("\n");
+		game += "\n";
 
 		for (ServerReadThread serverReadThread : serverReadThreads) {
-			DataOutputStream dataOutputStream = new DataOutputStream(serverReadThread.getConnectionSocket().getOutputStream()); {
-			dataOutputStream.writeBytes(game.toString());
+			DataOutputStream dataOutputStream = new DataOutputStream(serverReadThread.getConnectionSocket().getOutputStream());
+			{
+				dataOutputStream.writeBytes(game);
 			}
 		}
 	}

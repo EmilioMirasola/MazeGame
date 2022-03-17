@@ -45,7 +45,7 @@ public class GUI extends Application {
 
 	public static Image image_floor;
 	public static Image image_wall;
-	public static Image hero_right,hero_left,hero_up,hero_down;
+	public static Image hero_right, hero_left, hero_up, hero_down;
 
 	public static Player me;
 	public static List<Player> players = new ArrayList<Player>();
@@ -54,7 +54,7 @@ public class GUI extends Application {
 	private Label[][] fields;
 	private TextArea scoreList;
 
-	private  String[] board = {    // 20x20
+	private String[] board = {    // 20x20
 			"wwwwwwwwwwwwwwwwwwww",
 			"w        ww        w",
 			"w w  w  www w  w  ww",
@@ -77,7 +77,7 @@ public class GUI extends Application {
 			"wwwwwwwwwwwwwwwwwwww"
 	};
 
-	public GUI() throws IOException {
+	public GUI() {
 	}
 
 
@@ -92,6 +92,7 @@ public class GUI extends Application {
 	public void start(Stage primaryStage) {
 		ReadFromServer readFromServer = new ReadFromServer();
 		readFromServer.start();
+		serverRequest.connect("emilio");
 		try {
 			GridPane grid = new GridPane();
 			grid.setHgap(10);
@@ -108,25 +109,26 @@ public class GUI extends Application {
 
 			GridPane boardGrid = new GridPane();
 
-			image_wall  = new Image(getClass().getResourceAsStream("Image/wall4.png"),size,size,false,false);
-			image_floor = new Image(getClass().getResourceAsStream("Image/floor1.png"),size,size,false,false);
+			image_wall = new Image(getClass().getResourceAsStream("Image/wall4.png"), size, size, false, false);
+			image_floor = new Image(getClass().getResourceAsStream("Image/floor1.png"), size, size, false, false);
 
-			hero_right  = new Image(getClass().getResourceAsStream("Image/heroRight.png"),size,size,false,false);
-			hero_left   = new Image(getClass().getResourceAsStream("Image/heroLeft.png"),size,size,false,false);
-			hero_up     = new Image(getClass().getResourceAsStream("Image/heroUp.png"),size,size,false,false);
-			hero_down   = new Image(getClass().getResourceAsStream("Image/heroDown.png"),size,size,false,false);
+			hero_right = new Image(getClass().getResourceAsStream("Image/heroRight.png"), size, size, false, false);
+			hero_left = new Image(getClass().getResourceAsStream("Image/heroLeft.png"), size, size, false, false);
+			hero_up = new Image(getClass().getResourceAsStream("Image/heroUp.png"), size, size, false, false);
+			hero_down = new Image(getClass().getResourceAsStream("Image/heroDown.png"), size, size, false, false);
 
 			fields = new Label[20][20];
-			for (int j=0; j<20; j++) {
-				for (int i=0; i<20; i++) {
+			for (int j = 0; j < 20; j++) {
+				for (int i = 0; i < 20; i++) {
 					switch (board[j].charAt(i)) {
-					case 'w':
-						fields[i][j] = new Label("", new ImageView(image_wall));
-						break;
-					case ' ':
-						fields[i][j] = new Label("", new ImageView(image_floor));
-						break;
-					default: throw new Exception("Illegal field value: "+board[j].charAt(i) );
+						case 'w':
+							fields[i][j] = new Label("", new ImageView(image_wall));
+							break;
+						case ' ':
+							fields[i][j] = new Label("", new ImageView(image_floor));
+							break;
+						default:
+							throw new Exception("Illegal field value: " + board[j].charAt(i));
 					}
 					boardGrid.add(fields[i][j], i, j);
 				}
@@ -134,12 +136,12 @@ public class GUI extends Application {
 			scoreList.setEditable(false);
 
 
-			grid.add(mazeLabel,  0, 0);
+			grid.add(mazeLabel, 0, 0);
 			grid.add(scoreLabel, 1, 0);
-			grid.add(boardGrid,  0, 1);
-			grid.add(scoreList,  1, 1);
+			grid.add(boardGrid, 0, 1);
+			grid.add(scoreList, 1, 1);
 
-			Scene scene = new Scene(grid,scene_width,scene_height);
+			Scene scene = new Scene(grid, scene_width, scene_height);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 
@@ -159,9 +161,10 @@ public class GUI extends Application {
 						case RIGHT:
 							serverRequest.move("right");
 							break;
-						default: break;
+						default:
+							break;
 					}
-				}catch(Error e) {
+				} catch (Error e) {
 					System.out.println(e.getMessage());
 				}
 			});
@@ -179,7 +182,7 @@ public class GUI extends Application {
 //
 			scoreList.setText(getScoreList());
 
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -210,13 +213,12 @@ public class GUI extends Application {
 		}
 		if (playerToMove != null) {
 			playerToMove.direction = direction;
-			int x = playerToMove.getXpos(),y = playerToMove.getYpos();
+			int x = playerToMove.getXpos(), y = playerToMove.getYpos();
 
-			if (board[y+delta_y].charAt(x+delta_x)=='w') {
-				playerToMove.setPoint(playerToMove.getPoint() -1);
-			}
-			else {
-				Player p = getPlayerAt(x+delta_x,y+delta_y);
+			if (board[y + delta_y].charAt(x + delta_x) == 'w') {
+				playerToMove.setPoint(playerToMove.getPoint() - 1);
+			} else {
+				Player p = getPlayerAt(x + delta_x, y + delta_y);
 				if (p != null) {
 					playerToMove.setPoint(playerToMove.getPoint() + 10);
 					p.setPoint(playerToMove.getPoint() - 10);
@@ -224,21 +226,25 @@ public class GUI extends Application {
 					playerToMove.setPoint(playerToMove.getPoint() + 1);
 
 					fields[x][y].setGraphic(new ImageView(image_floor));
-					x+=delta_x;
-					y+=delta_y;
+					x += delta_x;
+					y += delta_y;
 
 					if (direction == Direction.RIGHT) {
 						fields[x][y].setGraphic(new ImageView(hero_right));
-					};
+					}
+					;
 					if (direction == Direction.LEFT) {
 						fields[x][y].setGraphic(new ImageView(hero_left));
-					};
+					}
+					;
 					if (direction == Direction.UP) {
 						fields[x][y].setGraphic(new ImageView(hero_up));
-					};
+					}
+					;
 					if (direction == Direction.DOWN) {
 						fields[x][y].setGraphic(new ImageView(hero_down));
-					};
+					}
+					;
 
 					playerToMove.setXpos(x);
 					playerToMove.setYpos(y);
@@ -252,80 +258,69 @@ public class GUI extends Application {
 	public String getScoreList() {
 		StringBuffer b = new StringBuffer(100);
 		for (Player p : players) {
-			b.append(p+"\r\n");
+			b.append(p + "\r\n");
 		}
 		return b.toString();
 	}
 
 	public Player getPlayerAt(int x, int y) {
 		for (Player p : players) {
-			if (p.getXpos()==x && p.getYpos()==y) {
+			if (p.getXpos() == x && p.getYpos() == y) {
 				return p;
 			}
 		}
 		return null;
 	}
 
-	public static void setMe(Player player) {
-		GUI.me = player;
-	}
 
-	public static void setPlayers(ArrayList<Player> players) {
-		GUI.players = players;
-		GUI.players.removeIf(p -> p.equals(GUI.me));
-	}
+	class ReadFromServer extends Thread {
+		@SneakyThrows
+		public void run() {
 
+			while (true) {
+				BufferedReader inFromServer = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+				String game = inFromServer.readLine();
+				System.out.println("game = " + game);
+				String[] gameArray = game.split(",");
 
+				//Bruges til at initialisere players i starten af spillet
+				if (!playersInitialized) {
+					for (int i = 0; i < gameArray.length; i++) {
 
+						String[] playerArray = gameArray[i].split(" ");
+						Optional<Direction> direction = Direction.get(playerArray[4]);
+						Player player = new Player(playerArray[1],
+								Integer.parseInt(playerArray[2]),
+								Integer.parseInt(playerArray[3]),
+								direction.get());
+						players.add(player);
 
+					}
+					playersInitialized = true;
+				}
+				//----------------------------------------------------------
 
-class ReadFromServer extends Thread {
-	@SneakyThrows
-	public void run() {
-
-		while (true) {
-			BufferedReader inFromServer = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-			String game = inFromServer.readLine();
-			String[] gameArray = game.split(",");
-
-			//Bruges til at initialisere players i starten af spillet
-			if (!playersInitialized) {
 				for (int i = 0; i < gameArray.length; i++) {
 
 					String[] playerArray = gameArray[i].split(" ");
 					Optional<Direction> direction = Direction.get(playerArray[4]);
-					Player player = new Player(playerArray[1],
-							Integer.parseInt(playerArray[2]),
-							Integer.parseInt(playerArray[3]),
-							direction.get());
-					players.add(player);
 
-				}
-				playersInitialized = true;
-			}
-			//----------------------------------------------------------
-
-			for (int i = 0; i < gameArray.length; i++) {
-
-				String[] playerArray = gameArray[i].split(" ");
-				Optional<Direction> direction = Direction.get(playerArray[4]);
-
-				Platform.runLater(() -> {
-					playerMoved(
-						playerArray[1],
-						Integer.parseInt(playerArray[2]),
-						Integer.parseInt(playerArray[3]),
-						direction.get()
+					Platform.runLater(() -> {
+						playerMoved(
+								playerArray[1],
+								Integer.parseInt(playerArray[2]),
+								Integer.parseInt(playerArray[3]),
+								direction.get()
 						);
-				});
+					});
+				}
+
 			}
-			
+
+
 		}
 
-
 	}
-
-}
 
 
 }
