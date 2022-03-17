@@ -1,9 +1,9 @@
-package game2022;
+package client;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import client.Direction;
+import model.Direction;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.stage.Stage;
@@ -29,7 +29,7 @@ public class GUI extends Application {
 
 	private Label[][] fields;
 	private TextArea scoreList;
-	
+
 	private  String[] board = {    // 20x20
 			"wwwwwwwwwwwwwwwwwwww",
 			"w        ww        w",
@@ -53,7 +53,7 @@ public class GUI extends Application {
 			"wwwwwwwwwwwwwwwwwwww"
 	};
 
-	
+
 	// -------------------------------------------
 	// | Maze: (0,0)              | Score: (1,0) |
 	// |-----------------------------------------|
@@ -71,12 +71,12 @@ public class GUI extends Application {
 
 			Text mazeLabel = new Text("Maze:");
 			mazeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-	
+
 			Text scoreLabel = new Text("Score:");
 			scoreLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 
 			scoreList = new TextArea();
-			
+
 			GridPane boardGrid = new GridPane();
 
 			image_wall  = new Image(getClass().getResourceAsStream("Image/wall4.png"),size,size,false,false);
@@ -94,7 +94,7 @@ public class GUI extends Application {
 					case 'w':
 						fields[i][j] = new Label("", new ImageView(image_wall));
 						break;
-					case ' ':					
+					case ' ':
 						fields[i][j] = new Label("", new ImageView(image_floor));
 						break;
 					default: throw new Exception("Illegal field value: "+board[j].charAt(i) );
@@ -103,13 +103,13 @@ public class GUI extends Application {
 				}
 			}
 			scoreList.setEditable(false);
-			
-			
-			grid.add(mazeLabel,  0, 0); 
-			grid.add(scoreLabel, 1, 0); 
+
+
+			grid.add(mazeLabel,  0, 0);
+			grid.add(scoreLabel, 1, 0);
 			grid.add(boardGrid,  0, 1);
 			grid.add(scoreList,  1, 1);
-						
+
 			Scene scene = new Scene(grid,scene_width,scene_height);
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -176,7 +176,7 @@ public class GUI extends Application {
 
 		if (board[y+delta_y].charAt(x+delta_x)=='w') {
 			me.addPoints(-1);
-		} 
+		}
 		else {
 			Player p = getPlayerAt(x+delta_x,y+delta_y);
 			if (p != null) {
@@ -184,7 +184,7 @@ public class GUI extends Application {
               p.addPoints(-10);
 			} else {
 				me.addPoints(1);
-			
+
 				fields[x][y].setGraphic(new ImageView(image_floor));
 				x+=delta_x;
 				y+=delta_y;
@@ -226,6 +226,6 @@ public class GUI extends Application {
 		return null;
 	}
 
-	
+
 }
 

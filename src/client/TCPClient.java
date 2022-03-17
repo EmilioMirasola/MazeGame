@@ -1,5 +1,8 @@
 package client;
 
+import threads.ReadThread;
+import threads.WriteThread;
+
 import java.net.Socket;
 
 public class TCPClient {

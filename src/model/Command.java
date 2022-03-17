@@ -1,4 +1,4 @@
-package client;
+package model;
 
 import java.util.Arrays;
 import java.util.Optional;

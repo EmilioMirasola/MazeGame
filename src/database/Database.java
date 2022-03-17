@@ -1,6 +1,6 @@
 package database;
 
-import game2022.Player;
+import client.Player;
 
 import java.util.ArrayList;
 import java.util.List;

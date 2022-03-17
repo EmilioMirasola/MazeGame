@@ -1,6 +1,6 @@
-package game2022;
+package client;
 
-import client.Direction;
+import model.Direction;
 
 public class Player {
 	String name;
