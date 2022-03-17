@@ -1,5 +1,6 @@
 package client;
 
+import model.Command;
 import model.ResponseStatus;
 
 import java.io.DataOutputStream;
@@ -14,18 +15,20 @@ public class ServerRequest {
         this.connectionSocket = new Socket("localhost", 6789);
     }
 
-    public ResponseStatus connect(String playerName){
-        return null;
+    public void connect(String playerName){
+        Command command = Command.CONNECT;
+
+        performRequest(command + " " + playerName);
 
     }
-    public void performRequest(String data) {
+    private void performRequest(String request) {
 
             try {
                 DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-                outToClient.writeBytes(data + "\n");
+                outToClient.writeBytes(request + "\n");
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
     }
 }
