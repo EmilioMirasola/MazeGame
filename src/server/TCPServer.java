@@ -1,7 +1,7 @@
 package server;
 
-import client.ReadThread;
-import client.WriteThread;
+import threads.ReadThread;
+import threads.WriteThread;
 
 import java.io.IOException;
 import java.net.ServerSocket;

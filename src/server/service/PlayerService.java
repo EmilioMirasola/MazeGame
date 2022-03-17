@@ -1,8 +1,8 @@
 package server.service;
 
-import client.Direction;
+import model.Direction;
 import database.Database;
-import game2022.Player;
+import client.Player;
 
 public class PlayerService {
 

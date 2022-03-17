@@ -1,6 +1,6 @@
 package server;
 
-import client.Command;
+import model.Command;
 import server.service.PlayerService;
 
 import java.util.Optional;
