@@ -1,6 +1,7 @@
 package client;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -21,6 +22,7 @@ public class WriteThread extends Thread {
                 BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
 
                 String send = inFromUser.readLine();
+
                 outToClient.writeBytes(send + "\n");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -28,5 +30,8 @@ public class WriteThread extends Thread {
         }
     }
 }
+
+
+
 
 

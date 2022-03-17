@@ -3,6 +3,7 @@ package game2022;
 import java.util.ArrayList;
 import java.util.List;
 
+import client.Direction;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.stage.Stage;
@@ -114,32 +115,62 @@ public class GUI extends Application {
 			primaryStage.show();
 
 			scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+				//Check if valid move
 				switch (event.getCode()) {
-				case UP:    playerMoved(0,-1,"up");    break;
-				case DOWN:  playerMoved(0,+1,"down");  break;
-				case LEFT:  playerMoved(-1,0,"left");  break;
-				case RIGHT: playerMoved(+1,0,"right"); break;
+				case UP:
+					//Send update til serveren
+					playerMoved(0,-1,Direction.UP);
+					break;
+				case DOWN:
+					//Send update til serveren
+					playerMoved(0,+1,Direction.DOWN);
+					break;
+				case LEFT:
+					//Send update til serveren
+					playerMoved(-1,0,Direction.LEFT);
+					break;
+				case RIGHT:
+					//Send update til serveren
+					playerMoved(+1,0,Direction.RIGHT);
+					break;
 				default: break;
 				}
 			});
-			
-            // Setting up standard players
-			
-			me = new Player("Orville",9,4,"up");
+//			createPlayers("Oskar", "Jeppe");
+//             Setting up standard players
+//			Player 1
+			me = new Player("Orville",9,4, Direction.UP);
 			players.add(me);
 			fields[9][4].setGraphic(new ImageView(hero_up));
 
-			Player harry = new Player("Harry",14,15,"up");
+			//Player 2
+			Player harry = new Player("Harry",14,15,Direction.UP);
 			players.add(harry);
 			fields[14][15].setGraphic(new ImageView(hero_up));
 
 			scoreList.setText(getScoreList());
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void playerMoved(int delta_x, int delta_y, String direction) {
+	public void createPlayers(String playerOneName, String playerTwoName) {
+
+		Player playerOne = new Player(playerOneName, 9, 4, Direction.UP);
+		Player playerTwo = new Player(playerTwoName, 14, 15, Direction.UP);
+
+		players.add(playerOne);
+		players.add(playerTwo);
+
+		//Add image to GUI
+		fields[9][4].setGraphic(new ImageView(hero_up));
+		fields[14][15].setGraphic(new ImageView(hero_up));
+
+		scoreList.setText(getScoreList());
+	}
+
+	public void playerMoved(int delta_x, int delta_y, Direction direction) {
 		me.direction = direction;
 		int x = me.getXpos(),y = me.getYpos();
 
@@ -158,16 +189,16 @@ public class GUI extends Application {
 				x+=delta_x;
 				y+=delta_y;
 
-				if (direction.equals("right")) {
+				if (direction == Direction.RIGHT) {
 					fields[x][y].setGraphic(new ImageView(hero_right));
 				};
-				if (direction.equals("left")) {
+				if (direction == Direction.LEFT) {
 					fields[x][y].setGraphic(new ImageView(hero_left));
 				};
-				if (direction.equals("up")) {
+				if (direction == Direction.UP) {
 					fields[x][y].setGraphic(new ImageView(hero_up));
 				};
-				if (direction.equals("down")) {
+				if (direction == Direction.DOWN) {
 					fields[x][y].setGraphic(new ImageView(hero_down));
 				};
 
