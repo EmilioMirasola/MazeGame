@@ -28,7 +28,7 @@ public class TCPServer {
 
 	}
 
-	public static void pushDataToClients() throws IOException {
+	public static synchronized void pushDataToClients() throws IOException {
 		List<Player> players = Database.getPlayers();
 
 		Optional<Player> playerWhoMoved = players
