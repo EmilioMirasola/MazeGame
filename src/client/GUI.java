@@ -92,7 +92,7 @@ public class GUI extends Application {
 	public void start(Stage primaryStage) {
 		ReadFromServer readFromServer = new ReadFromServer();
 		readFromServer.start();
-		String playerName = "oskar";
+		String playerName = "emilio";
 		serverRequest.connect(playerName);
 		me = new Player(playerName, 1, 1, Direction.RIGHT);
 		try {

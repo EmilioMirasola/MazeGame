@@ -3,7 +3,6 @@ package server;
 import client.Player;
 import database.Database;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -38,9 +37,8 @@ public class TCPServer {
 
 		if (playerWhoMoved.isPresent()) {
 			for (ServerReadThread serverReadThread : serverReadThreads) {
-				DataOutputStream dataOutputStream = new DataOutputStream(serverReadThread.getConnectionSocket().getOutputStream());
 				{
-					dataOutputStream.writeBytes(playerWhoMoved.get().toString() + "\n");
+					serverReadThread.getDataOutputStream().writeBytes(playerWhoMoved.get() + "\n");
 				}
 			}
 			playerWhoMoved.get().setDirection(null);
