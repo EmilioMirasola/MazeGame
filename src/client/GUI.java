@@ -179,7 +179,6 @@ public class GUI extends Application {
 	}
 
 	public void playerMoved(String playerName, int delta_x, int delta_y, Direction direction) {
-		System.out.println("players = " + players);
 		Player playerToMove = null;
 		for (Player p : players) {
 			if (p.getName().equals(playerName)) {
@@ -188,7 +187,7 @@ public class GUI extends Application {
 			}
 		}
 		if (playerToMove == null) {
-			playerToMove = new Player(playerName, 0, 0, direction);
+			playerToMove = new Player(playerName, 9, 4, direction);
 			players.add(playerToMove);
 		}
 
