@@ -2,7 +2,6 @@ package server;
 
 import client.Player;
 import database.Database;
-import threads.ReadThread;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -10,6 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TCPServer {
 	public static ArrayList<ServerReadThread> serverReadThreads = new ArrayList<>();
@@ -29,19 +29,21 @@ public class TCPServer {
 	}
 
 	public static void pushDataToClients() throws IOException {
-		String game = "";
 		List<Player> players = Database.getPlayers();
 
-		for (Player p : players) {
-			game += p.toString();
-		}
-		game += "\n";
+		Optional<Player> playerWhoMoved = players
+				.stream()
+				.filter(player -> player.getDirection() != null)
+				.findFirst();
 
-		for (ServerReadThread serverReadThread : serverReadThreads) {
-			DataOutputStream dataOutputStream = new DataOutputStream(serverReadThread.getConnectionSocket().getOutputStream());
-			{
-				dataOutputStream.writeBytes(game);
+		if (playerWhoMoved.isPresent()) {
+			for (ServerReadThread serverReadThread : serverReadThreads) {
+				DataOutputStream dataOutputStream = new DataOutputStream(serverReadThread.getConnectionSocket().getOutputStream());
+				{
+					dataOutputStream.writeBytes(playerWhoMoved.get().toString() + "\n");
+				}
 			}
+			playerWhoMoved.get().setDirection(null);
 		}
 	}
 }

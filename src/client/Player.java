@@ -21,11 +21,8 @@ public class Player {
 		return (
 				"player" + " " +
 						this.getName() + " " +
-						this.getXpos() + " " +
-						this.getYpos() + " " +
 						this.getDirection() + " " +
-						this.getPoint() + " "
-						+ ","
+						","
 				);
 	}
 

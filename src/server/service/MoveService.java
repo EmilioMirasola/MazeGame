@@ -19,12 +19,8 @@ public class MoveService {
             }
         }
         if (playerToUpdate != null) {
-            int xPos = Integer.parseInt(params[2]);
-            int yPos = Integer.parseInt(params[3]);
-            Optional<Direction> direction = Direction.get(params[4]);
+            Optional<Direction> direction = Direction.get(params[2]);
             if (direction.isPresent()) {
-                playerToUpdate.setXpos(xPos);
-                playerToUpdate.setYpos(yPos);
                 playerToUpdate.setDirection(direction.get());
             }
         }

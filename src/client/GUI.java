@@ -254,19 +254,18 @@ public class GUI extends Application {
 
 			while (true) {
 				BufferedReader inFromServer = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-				String game = inFromServer.readLine();
-				System.out.println("game = " + game);
-				String[] gameArray = game.split(",");
+				String playerFromServer = inFromServer.readLine();
+				String[] gameArray = playerFromServer.split(",");
 
 				//Bruges til at initialisere players i starten af spillet
 				if (!playersInitialized) {
 					for (int i = 0; i < gameArray.length; i++) {
 
 						String[] playerArray = gameArray[i].split(" ");
-						Optional<Direction> direction = Direction.get(playerArray[4]);
+						Optional<Direction> direction = Direction.get(playerArray[2]);
 						Player player = new Player(playerArray[1],
-								Integer.parseInt(playerArray[2]),
-								Integer.parseInt(playerArray[3]),
+								1,
+								1,
 								direction.get());
 						players.add(player);
 
@@ -280,7 +279,7 @@ public class GUI extends Application {
 				for (int i = 0; i < gameArray.length; i++) {
 
 					String[] playerArray = gameArray[i].split(" ");
-					Optional<Direction> direction = Direction.get(playerArray[4]);
+					Optional<Direction> direction = Direction.get(playerArray[2]);
 					int deltaX = 0;
 					int deltaY = 0;
 
