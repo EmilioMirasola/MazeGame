@@ -35,7 +35,7 @@ public class GUI extends Application {
 
 	static {
 		try {
-			connectionSocket = new Socket("10.10.131.92", 6789);
+			connectionSocket = new Socket("localhost", 6789);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -300,16 +300,42 @@ public class GUI extends Application {
 				}
 				//----------------------------------------------------------
 
+
+
 				for (int i = 0; i < gameArray.length; i++) {
 
 					String[] playerArray = gameArray[i].split(" ");
 					Optional<Direction> direction = Direction.get(playerArray[4]);
+					int deltaX = 0;
+					int deltaY = 0;
 
+					if (direction.equals(Optional.of(Direction.UP))) {
+						deltaX = 0;
+						deltaY = -1;
+					}
+					else if (direction.equals(Optional.of(Direction.DOWN))) {
+						deltaX = 0;
+						deltaY = 1;
+
+					}
+					else if (direction.equals(Optional.of(Direction.LEFT))) {
+						deltaX = -1;
+						deltaY = 0;
+
+					}
+					else if (direction.equals(Optional.of(Direction.RIGHT))) {
+						deltaX = 1;
+						deltaY = 0;
+					}
+
+
+					int finalDeltaX = deltaX;
+					int finalDeltaY = deltaY;
 					Platform.runLater(() -> {
 						playerMoved(
 								playerArray[1],
-								Integer.parseInt(playerArray[2]),
-								Integer.parseInt(playerArray[3]),
+								finalDeltaX,
+								finalDeltaY,
 								direction.get()
 						);
 					});
