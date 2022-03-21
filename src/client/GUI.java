@@ -35,7 +35,7 @@ public class GUI extends Application {
 
 	static {
 		try {
-			connectionSocket = new Socket("localhost", 6789);
+			connectionSocket = new Socket("10.10.138.84", 6789);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -92,7 +92,7 @@ public class GUI extends Application {
 	public void start(Stage primaryStage) {
 		ReadFromServer readFromServer = new ReadFromServer();
 		readFromServer.start();
-		String playerName = "oskar";
+		String playerName = "LarsAllan";
 		serverRequest.connect(playerName);
 		me = new Player(playerName, 1, 1, Direction.RIGHT);
 		try {
@@ -200,7 +200,7 @@ public class GUI extends Application {
 			Player p = getPlayerAt(x + delta_x, y + delta_y);
 			if (p != null) {
 				playerToMove.setPoint(playerToMove.getPoint() + 10);
-				p.setPoint(playerToMove.getPoint() - 10);
+				p.setPoint(p.getPoint() - 10);
 			} else {
 				playerToMove.setPoint(playerToMove.getPoint() + 1);
 
