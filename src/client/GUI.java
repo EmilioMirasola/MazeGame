@@ -92,7 +92,7 @@ public class GUI extends Application {
 	public void start(Stage primaryStage) {
 		ReadFromServer readFromServer = new ReadFromServer();
 		readFromServer.start();
-		String playerName = "emilio";
+		String playerName = "oskar";
 		serverRequest.connect(playerName);
 		me = new Player(playerName, 0, 0, Direction.RIGHT);
 		try {
@@ -187,7 +187,7 @@ public class GUI extends Application {
 			}
 		}
 		if (playerToMove == null) {
-			playerToMove = new Player(playerName, 9, 4, direction);
+			playerToMove = new Player(playerName, 0, 0, direction);
 			players.add(playerToMove);
 		}
 
