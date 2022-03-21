@@ -5,8 +5,8 @@ import database.Database;
 import client.Player;
 
 public class ConnectionService {
-	private int lastXPosition = 9;
-	private int lastYPosition = 4;
+	private int lastXPosition = 1;
+	private int lastYPosition = 1;
 
 	public void connectPlayer(String requestCommand) {
 		String playerName = requestCommand.split(" ")[1];
