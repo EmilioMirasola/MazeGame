@@ -92,7 +92,9 @@ public class GUI extends Application {
 	public void start(Stage primaryStage) {
 		ReadFromServer readFromServer = new ReadFromServer();
 		readFromServer.start();
-		serverRequest.connect("emilio");
+		String playerName = "emilio";
+		serverRequest.connect(playerName);
+		me = new Player(playerName, 0, 0, Direction.RIGHT);
 		try {
 			GridPane grid = new GridPane();
 			grid.setHgap(10);
@@ -150,16 +152,16 @@ public class GUI extends Application {
 				try {
 					switch (event.getCode()) {
 						case UP:
-							serverRequest.move("up");
+							serverRequest.move(me.getName(), "up");
 							break;
 						case DOWN:
-							serverRequest.move("down");
+							serverRequest.move(me.getName(), "down");
 							break;
 						case LEFT:
-							serverRequest.move("left");
+							serverRequest.move(me.getName(), "left");
 							break;
 						case RIGHT:
-							serverRequest.move("right");
+							serverRequest.move(me.getName(), "right");
 							break;
 						default:
 							break;
@@ -168,40 +170,13 @@ public class GUI extends Application {
 					System.out.println(e.getMessage());
 				}
 			});
-//			createPlayers("Oskar", "Jeppe");
-//             Setting up standard players
-//			Player 1
-//			me = new Player("Orville",9,4, Direction.UP);
-//			players.add(me);
-//			fields[9][4].setGraphic(new ImageView(hero_up));
-//
-//			//Player 2
-//			Player harry = new Player("Harry",14,15,Direction.UP);
-//			players.add(harry);
-//			fields[14][15].setGraphic(new ImageView(hero_up));
-//
+
 			scoreList.setText(getScoreList());
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
-//	public void createPlayers(ArrayList<String> playerNames) {
-//
-//
-//		Player playerOne = new Player(playerOneName, 9, 4, Direction.UP);
-//		Player playerTwo = new Player(playerTwoName, 14, 15, Direction.UP);
-//
-//		players.add(playerOne);
-//		players.add(playerTwo);
-//
-//		//Add image to GUI
-//		fields[9][4].setGraphic(new ImageView(hero_up));
-//		fields[14][15].setGraphic(new ImageView(hero_up));
-//
-//		scoreList.setText(getScoreList());
-//	}
 
 	public void playerMoved(String playerName, int delta_x, int delta_y, Direction direction) {
 		Player playerToMove = null;

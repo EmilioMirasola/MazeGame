@@ -28,6 +28,7 @@ public class Controller {
 				break;
 			case MOVE:
 				moveService.movePlayer(request);
+				break;
 			default:
 				throw new IllegalArgumentException("Unknown command");
 		}
