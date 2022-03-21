@@ -94,7 +94,7 @@ public class GUI extends Application {
 		readFromServer.start();
 		String playerName = "oskar";
 		serverRequest.connect(playerName);
-		me = new Player(playerName, 0, 0, Direction.RIGHT);
+		me = new Player(playerName, 9, 4, Direction.RIGHT);
 		try {
 			GridPane grid = new GridPane();
 			grid.setHgap(10);
@@ -187,7 +187,7 @@ public class GUI extends Application {
 			}
 		}
 		if (playerToMove == null) {
-			playerToMove = new Player(playerName, 0, 0, direction);
+			playerToMove = new Player(playerName, 9, 4, direction);
 			players.add(playerToMove);
 		}
 
