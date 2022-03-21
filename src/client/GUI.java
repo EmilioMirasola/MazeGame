@@ -35,7 +35,7 @@ public class GUI extends Application {
 
 	static {
 		try {
-			connectionSocket = new Socket("10.10.131.120", 6789);
+			connectionSocket = new Socket("localhost", 6789);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -92,7 +92,7 @@ public class GUI extends Application {
 	public void start(Stage primaryStage) {
 		ReadFromServer readFromServer = new ReadFromServer();
 		readFromServer.start();
-		String playerName = "emilio";
+		String playerName = "oskar";
 		serverRequest.connect(playerName);
 		me = new Player(playerName, 1, 1, Direction.RIGHT);
 		try {
@@ -236,7 +236,8 @@ public class GUI extends Application {
 	public String getScoreList() {
 		StringBuffer b = new StringBuffer(100);
 		for (Player p : players) {
-			b.append(p + "\r\n");
+//			b.append(p + "\r\n");
+			b.append(p.getName() + " " + p.getPoint() + "\r\n");
 		}
 		return b.toString();
 	}
