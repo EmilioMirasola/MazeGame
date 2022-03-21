@@ -11,8 +11,8 @@ public class ConnectionService {
 	public void connectPlayer(String requestCommand) {
 		String playerName = requestCommand.split(" ")[1];
 		Player player = new Player(playerName, lastXPosition, lastYPosition, Direction.UP);
-		lastXPosition++;
-		lastYPosition++;
+//		lastXPosition++;
+//		lastYPosition++;
 		Database.addPlayer(player);
 	}
 }
