@@ -254,9 +254,8 @@ public class GUI extends Application {
 	class ReadFromServer extends Thread {
 		@SneakyThrows
 		public void run() {
-
+			BufferedReader inFromServer = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 			while (true) {
-				BufferedReader inFromServer = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 				String playerFromServer = inFromServer.readLine();
 				String[] gameArray = playerFromServer.split(",");
 
