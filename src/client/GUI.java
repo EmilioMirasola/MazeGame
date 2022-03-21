@@ -35,7 +35,7 @@ public class GUI extends Application {
 
 	static {
 		try {
-			connectionSocket = new Socket("localhost", 6789);
+			connectionSocket = new Socket("10.10.131.120", 6789);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -179,6 +179,7 @@ public class GUI extends Application {
 	}
 
 	public void playerMoved(String playerName, int delta_x, int delta_y, Direction direction) {
+		System.out.println("players = " + players);
 		Player playerToMove = null;
 		for (Player p : players) {
 			if (p.getName().equals(playerName)) {
@@ -186,47 +187,50 @@ public class GUI extends Application {
 				break;
 			}
 		}
-		if (playerToMove != null) {
-			playerToMove.direction = direction;
-			int x = playerToMove.getXpos(), y = playerToMove.getYpos();
-
-			if (board[y + delta_y].charAt(x + delta_x) == 'w') {
-				playerToMove.setPoint(playerToMove.getPoint() - 1);
-			} else {
-				Player p = getPlayerAt(x + delta_x, y + delta_y);
-				if (p != null) {
-					playerToMove.setPoint(playerToMove.getPoint() + 10);
-					p.setPoint(playerToMove.getPoint() - 10);
-				} else {
-					playerToMove.setPoint(playerToMove.getPoint() + 1);
-
-					fields[x][y].setGraphic(new ImageView(image_floor));
-					x += delta_x;
-					y += delta_y;
-
-					if (direction == Direction.RIGHT) {
-						fields[x][y].setGraphic(new ImageView(hero_right));
-					}
-					;
-					if (direction == Direction.LEFT) {
-						fields[x][y].setGraphic(new ImageView(hero_left));
-					}
-					;
-					if (direction == Direction.UP) {
-						fields[x][y].setGraphic(new ImageView(hero_up));
-					}
-					;
-					if (direction == Direction.DOWN) {
-						fields[x][y].setGraphic(new ImageView(hero_down));
-					}
-					;
-
-					playerToMove.setXpos(x);
-					playerToMove.setYpos(y);
-				}
-			}
-			scoreList.setText(getScoreList());
+		if (playerToMove == null) {
+			playerToMove = new Player(playerName, 0, 0, direction);
+			players.add(playerToMove);
 		}
+
+		playerToMove.direction = direction;
+		int x = playerToMove.getXpos(), y = playerToMove.getYpos();
+
+		if (board[y + delta_y].charAt(x + delta_x) == 'w') {
+			playerToMove.setPoint(playerToMove.getPoint() - 1);
+		} else {
+			Player p = getPlayerAt(x + delta_x, y + delta_y);
+			if (p != null) {
+				playerToMove.setPoint(playerToMove.getPoint() + 10);
+				p.setPoint(playerToMove.getPoint() - 10);
+			} else {
+				playerToMove.setPoint(playerToMove.getPoint() + 1);
+
+				fields[x][y].setGraphic(new ImageView(image_floor));
+				x += delta_x;
+				y += delta_y;
+
+				if (direction == Direction.RIGHT) {
+					fields[x][y].setGraphic(new ImageView(hero_right));
+				}
+				;
+				if (direction == Direction.LEFT) {
+					fields[x][y].setGraphic(new ImageView(hero_left));
+				}
+				;
+				if (direction == Direction.UP) {
+					fields[x][y].setGraphic(new ImageView(hero_up));
+				}
+				;
+				if (direction == Direction.DOWN) {
+					fields[x][y].setGraphic(new ImageView(hero_down));
+				}
+				;
+
+				playerToMove.setXpos(x);
+				playerToMove.setYpos(y);
+			}
+		}
+		scoreList.setText(getScoreList());
 
 	}
 
@@ -275,7 +279,6 @@ public class GUI extends Application {
 				//----------------------------------------------------------
 
 
-
 				for (int i = 0; i < gameArray.length; i++) {
 
 					String[] playerArray = gameArray[i].split(" ");
@@ -286,18 +289,15 @@ public class GUI extends Application {
 					if (direction.equals(Optional.of(Direction.UP))) {
 						deltaX = 0;
 						deltaY = -1;
-					}
-					else if (direction.equals(Optional.of(Direction.DOWN))) {
+					} else if (direction.equals(Optional.of(Direction.DOWN))) {
 						deltaX = 0;
 						deltaY = 1;
 
-					}
-					else if (direction.equals(Optional.of(Direction.LEFT))) {
+					} else if (direction.equals(Optional.of(Direction.LEFT))) {
 						deltaX = -1;
 						deltaY = 0;
 
-					}
-					else if (direction.equals(Optional.of(Direction.RIGHT))) {
+					} else if (direction.equals(Optional.of(Direction.RIGHT))) {
 						deltaX = 1;
 						deltaY = 0;
 					}
