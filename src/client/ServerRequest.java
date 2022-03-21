@@ -9,31 +9,32 @@ import java.net.Socket;
 
 
 public class ServerRequest {
-    private final Socket connectionSocket;
+	private final Socket connectionSocket;
 
-    public ServerRequest(Socket connectionSocket) {
-        this.connectionSocket = connectionSocket;
-    }
+	public ServerRequest(Socket connectionSocket) {
+		this.connectionSocket = connectionSocket;
+	}
 
-    public void connect(String playerName){
-        Command command = Command.CONNECT;
+	public void connect(String playerName) {
+		Command command = Command.CONNECT;
 
-        performRequest(command + " " + playerName);
+		performRequest(command + " " + playerName);
 
-    }
-    private void performRequest(String request) {
+	}
 
-            try {
-                DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-                outToClient.writeBytes(request + "\n");
+	private void performRequest(String request) {
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-    }
+		try {
+			DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+			outToClient.writeBytes(request + "\n");
 
-    public void move(String direction) {
-        Command command = Command.MOVE;
-        performRequest(command + " " + direction);
-    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void move(String playeName, String direction) {
+		Command command = Command.MOVE;
+		performRequest(command + " " + playeName + " " + direction);
+	}
 }

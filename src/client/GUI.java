@@ -92,7 +92,9 @@ public class GUI extends Application {
 	public void start(Stage primaryStage) {
 		ReadFromServer readFromServer = new ReadFromServer();
 		readFromServer.start();
-		serverRequest.connect("emilio");
+		String playerName = "emilio";
+		serverRequest.connect(playerName);
+		me = new Player(playerName, 0, 0, Direction.RIGHT);
 		try {
 			GridPane grid = new GridPane();
 			grid.setHgap(10);
@@ -150,16 +152,16 @@ public class GUI extends Application {
 				try {
 					switch (event.getCode()) {
 						case UP:
-							serverRequest.move("up");
+							serverRequest.move(me.getName(), "up");
 							break;
 						case DOWN:
-							serverRequest.move("down");
+							serverRequest.move(me.getName(), "down");
 							break;
 						case LEFT:
-							serverRequest.move("left");
+							serverRequest.move(me.getName(), "left");
 							break;
 						case RIGHT:
-							serverRequest.move("right");
+							serverRequest.move(me.getName(), "right");
 							break;
 						default:
 							break;
