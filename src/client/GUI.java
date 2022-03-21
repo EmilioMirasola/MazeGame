@@ -35,7 +35,7 @@ public class GUI extends Application {
 
 	static {
 		try {
-			connectionSocket = new Socket("10.10.131.92", 6789);
+			connectionSocket = new Socket("localhost", 6789);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -168,40 +168,13 @@ public class GUI extends Application {
 					System.out.println(e.getMessage());
 				}
 			});
-//			createPlayers("Oskar", "Jeppe");
-//             Setting up standard players
-//			Player 1
-//			me = new Player("Orville",9,4, Direction.UP);
-//			players.add(me);
-//			fields[9][4].setGraphic(new ImageView(hero_up));
-//
-//			//Player 2
-//			Player harry = new Player("Harry",14,15,Direction.UP);
-//			players.add(harry);
-//			fields[14][15].setGraphic(new ImageView(hero_up));
-//
+
 			scoreList.setText(getScoreList());
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
-//	public void createPlayers(ArrayList<String> playerNames) {
-//
-//
-//		Player playerOne = new Player(playerOneName, 9, 4, Direction.UP);
-//		Player playerTwo = new Player(playerTwoName, 14, 15, Direction.UP);
-//
-//		players.add(playerOne);
-//		players.add(playerTwo);
-//
-//		//Add image to GUI
-//		fields[9][4].setGraphic(new ImageView(hero_up));
-//		fields[14][15].setGraphic(new ImageView(hero_up));
-//
-//		scoreList.setText(getScoreList());
-//	}
 
 	public void playerMoved(String playerName, int delta_x, int delta_y, Direction direction) {
 		Player playerToMove = null;
