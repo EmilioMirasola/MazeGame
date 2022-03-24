@@ -65,7 +65,7 @@ public class ServerReadThread extends Thread {
 		int lastYPosition = 1;
 
 		String playerName = requestCommand.split(" ")[1];
-		Player player = new Player(playerName, lastXPosition, lastYPosition, Direction.UP);
+		Player player = new Player(playerName, lastXPosition, lastYPosition, null);
 		Database.addPlayer(player);
 	}
 
