@@ -35,7 +35,7 @@ public class GUI extends Application {
 
 	static {
 		try {
-			connectionSocket = new Socket("10.10.138.84", 6789);
+			connectionSocket = new Socket("localhost", 6789);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -92,7 +92,7 @@ public class GUI extends Application {
 	public void start(Stage primaryStage) {
 		ReadFromServer readFromServer = new ReadFromServer();
 		readFromServer.start();
-		String playerName = "LarsAllan";
+		String playerName = "Oskar";
 		serverRequest.connect(playerName);
 		me = new Player(playerName, 1, 1, Direction.RIGHT);
 		try {
@@ -261,20 +261,20 @@ public class GUI extends Application {
 				String[] gameArray = playerFromServer.split(",");
 
 				//Bruges til at initialisere players i starten af spillet
-				if (!playersInitialized) {
-					for (int i = 0; i < gameArray.length; i++) {
-
-						String[] playerArray = gameArray[i].split(" ");
-						Optional<Direction> direction = Direction.get(playerArray[2]);
-						Player player = new Player(playerArray[1],
-								1,
-								1,
-								direction.get());
-						players.add(player);
-
-					}
-					playersInitialized = true;
-				}
+//				if (!playersInitialized) {
+//					for (int i = 0; i < gameArray.length; i++) {
+//
+//						String[] playerArray = gameArray[i].split(" ");
+//						Optional<Direction> direction = Direction.get(playerArray[2]);
+//						Player player = new Player(playerArray[1],
+//								1,
+//								1,
+//								direction.get());
+//						players.add(player);
+//
+//					}
+//					playersInitialized = true;
+//				}
 				//----------------------------------------------------------
 
 

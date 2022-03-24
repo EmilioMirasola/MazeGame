@@ -14,7 +14,7 @@ public class Player {
 		this.xpos = xpos;
 		this.ypos = ypos;
 		this.direction = direction;
-		this.point = 0;
+		this.point = 1;
 	}
 
 	public String toString() {
